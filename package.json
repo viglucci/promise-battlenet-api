@@ -1,0 +1,29 @@
+{
+  "name": "promise-battlenet-api",
+  "version": "0.1.0",
+  "description": "Battle.net api using promises",
+  "main": "client.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/viglucci/promise-battlenet-api.git"
+  },
+  "keywords": [
+    "battlenet",
+    "api",
+    "promises"
+  ],
+  "author": "Kevin Viglucci <kviglucci@gmail.com> (https://github.com/viglucci)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/viglucci/promise-battlenet-api/issues"
+  },
+  "homepage": "https://github.com/viglucci/promise-battlenet-api",
+  "dependencies": {
+    "extend": "^2.0.0",
+    "promise-request": "^0.1.2",
+    "request-promise": "^0.4.3"
+  }
+}
