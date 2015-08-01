@@ -1,6 +1,6 @@
 {
   "name": "promise-battlenet-api",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Battle.net api using promises",
   "main": "client.js",
   "scripts": {

@@ -11,7 +11,7 @@ var request = require('request-promise'),
 module.exports = function(options){
     'use strict';
 
-    var version = 'v0.1.0';
+    var version = 'v0.1.1';
 
     if (typeof options !== 'object') {
         options = {
