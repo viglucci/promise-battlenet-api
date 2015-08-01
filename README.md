@@ -1,6 +1,6 @@
 # promise-battlenet-api
 
-A basic client for the Blizzard Battle.net api using promise-request. Does not currently support protected resources.
+A basic client for the Blizzard Battle.net api using request-promise. Does not currently support protected resources.
 
 ## Installation
     npm install promise-battlenet-api --save
