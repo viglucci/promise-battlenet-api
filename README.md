@@ -26,5 +26,4 @@ A basic client for the Blizzard Battle.net api using promise-request. Does not c
 
 ## Release History
 
-* 0.0.3 Add support for fields
-* 0.0.2 Initial alpha release
+* 0.1.0 initial release
