@@ -224,7 +224,14 @@ module.exports = function(options){
 
         fetch: function(resource, params, config) {
             var req = _buildUrl(resource, params, config);
-            return request(req);
+            return (function(){
+                var requestTs = Date.now();
+                return request(req)
+                    .then(function (result){
+                        result.responseTime = Date.now() - requestTs;
+                        return result;
+                    });
+            })();
         }
 
     };
