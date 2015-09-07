@@ -26,4 +26,5 @@ A basic client for the Blizzard Battle.net api using request-promise. Does not c
 
 ## Release History
 
+* 0.1.2 add responseTime to request response
 * 0.1.0 initial release
