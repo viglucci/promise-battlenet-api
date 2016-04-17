@@ -79,7 +79,7 @@ Throttling uses [xavi-/node-simple-rate-limiter](https://github.com/xavi-/node-s
 
 ## Example Responses
 
-The beloew responses are an example of, but not a complete list, of common responses from the client.
+The below responses are an example of, but not a complete list, of common responses from the client.
 
 ### Successful Response
 
