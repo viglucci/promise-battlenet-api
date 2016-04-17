@@ -16,7 +16,7 @@ module.exports = function(_options) {
 	var version = "v0.1.2";
 
 	var options = {
-		"API_KEY": _options.API_KEY || process.env.BNET_ID || process.env.BATTLENET_API_KEY || ""
+		"API_KEY": _options.apikey || process.env.BNET_ID || process.env.BATTLENET_API_KEY || ""
 	};
 
 	if(typeof _options.throttle !== "undefined"
@@ -247,7 +247,7 @@ module.exports = function(_options) {
 							"x-plan-quota-reset": headers["x-plan-quota-reset"]
 						},
 						"body": body
-					};					
+					};
 					if (!error && response.statusCode == 200) {
 						results["lastModified"] = response["last-modified"];
 						resolve(results);
