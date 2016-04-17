@@ -44,6 +44,8 @@ Throttling uses [xavi-/node-simple-rate-limiter](https://github.com/xavi-/node-s
         }
     });
 
+**Throttling is intended for avoiding 403 Forbidden (Account Over Queries Per Second Limit) errors. Should your application make more requests than allowed for your hourly quota, you will need to manually handle those errors**.
+
 ## Usage
 
 ### Query basic character information
