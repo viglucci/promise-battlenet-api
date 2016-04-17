@@ -90,12 +90,12 @@ The below responses are an example of, but not a complete list, of common respon
     { statusCode: 200, // http status code
       responseTime: 528, // how long in milliseconds the response took
       headers:
-       { 'x-plan-qps-allotted': '100', // howmany calls you are allowed to make an second
-         'x-plan-qps-current': '61', // howmany calls you have made this second
-         'x-plan-quota-allotted': '36000', // howmany calls you are allowed to make an hour
-         'x-plan-quota-current': '711', // howmany calls you have made this hour
+       { 'x-plan-qps-allotted': '100', // how many calls you are allowed to make an second
+         'x-plan-qps-current': '61', // how many calls you have made this second
+         'x-plan-quota-allotted': '36000', // how many calls you are allowed to make an hour
+         'x-plan-quota-current': '711', // how many calls you have made this hour
          'x-plan-quota-reset': 'Sunday, April 17, 2016 5:00:00 PM GMT', // when your calls per hour limit will reset
-         'last-modified': 'Sun, 17 Apr 2016 11:49:37 GMT' }, // when the data of the resposne was last modified
+         'last-modified': 'Sun, 17 Apr 2016 11:49:37 GMT' }, // when the data of the response was last modified
       data: // the json payload / body of the response
        { lastModified: 1460893777000,
          name: 'Bøllwèrk',
