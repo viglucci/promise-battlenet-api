@@ -5,25 +5,33 @@
  *  https://github.com/benweier/battlenet-api
  */
 
-var request = require('request-promise'),
-	extend = require('extend');
+var limit     = require("simple-rate-limiter"),
+	Promise   = require("bluebird"),
+	request   = require("request"),
+	extend    = require("extend");
 
-module.exports = function(options){
-	'use strict';
+module.exports = function(_options) {
+	"use strict"; 
 
-	var version = 'v0.1.1';
+	var version = "v0.1.2";
 
-	if (typeof options !== 'object') {
-		options = {
-			BNET_ID: options || false
-		};
+	var options = {
+		"API_KEY": _options.API_KEY || process.env.BNET_ID || process.env.BATTLENET_API_KEY || ""
+	};
+
+	if(typeof _options.throttle !== "undefined"
+		&& typeof _options.throttle.to !== "undefined" 
+		&& typeof _options.throttle.per !== "undefined") {
+		request = limit(request)
+			.to(_options.throttle.to)
+			.per(_options.throttle.per);
 	}
 
 	var requiredDefaults = {
-		method: 'GET',
-		encoding: 'UTF-8',
+		method: "GET",
+		encoding: "UTF-8",
 		headers: {
-			'User-Agent': 'Node.js/' + process.version + ' promise-battlenet-api/' + version
+			"User-Agent": "Node.js/" + process.version + " promise-battlenet-api/" + version
 		},
 		json: true,
 		qs: {},
@@ -66,28 +74,28 @@ module.exports = function(options){
 
 		var endpoints = {
 			us: {
-				hostname: 'us.api.battle.net',
-				defaultLocale: 'en_US'
+				hostname: "us.api.battle.net",
+				defaultLocale: "en_US"
 			},
 			eu: {
-				hostname: 'eu.api.battle.net',
-				defaultLocale: 'en_GB'
+				hostname: "eu.api.battle.net",
+				defaultLocale: "en_GB"
 			},
 			sea: {
-				hostname: 'sea.api.battle.net',
-				defaultLocale: 'en_US'
+				hostname: "sea.api.battle.net",
+				defaultLocale: "en_US"
 			},
 			kr: {
-				hostname: 'kr.api.battle.net',
-				defaultLocale: 'ko_KR'
+				hostname: "kr.api.battle.net",
+				defaultLocale: "ko_KR"
 			},
 			tw: {
-				hostname: 'tw.api.battle.net',
-				defaultLocale: 'zh_TW'
+				hostname: "tw.api.battle.net",
+				defaultLocale: "zh_TW"
 			},
 			cn: {
-				hostname: 'api.battlenet.com.cn',
-				defaultLocale: 'zh_CN'
+				hostname: "api.battlenet.com.cn",
+				defaultLocale: "zh_CN"
 			}
 		};
 
@@ -98,90 +106,90 @@ module.exports = function(options){
 		return endpoints.us;
 	};
 
-	var _buildType = function(resource, params){
+	var _buildType = function(resource, params) {
 		var path = null;
 		switch (resource)
 		{
-			case 'achievement':
-				path = 'wow/achievement/' + params['id'];
+			case "achievement":
+				path = "wow/achievement/" + params["id"];
 				break;
-			case 'auction':
-				path = 'wow/auction/data/' + params['realm'];
+			case "auction":
+				path = "wow/auction/data/" + params["realm"];
 				break;
-			case 'abilities':
-				path = 'wow/battlepet/ability/' + params['id'];
+			case "abilities":
+				path = "wow/battlepet/ability/" + params["id"];
 				break;
-			case 'species':
-				path = 'wow/battlepet/species/' + params['id'];
+			case "species":
+				path = "wow/battlepet/species/" + params["id"];
 				break;
-			case 'stats':
-				path = 'wow/battlepet/stats/' + params['id'];
+			case "stats":
+				path = "wow/battlepet/stats/" + params["id"];
 				break;
-			case 'realm_leaderboard':
-				path = 'wow/challenge/' + params['realm'];
+			case "realm_leaderboard":
+				path = "wow/challenge/" + params["realm"];
 				break;
-			case 'region_leaderboard':
-				path = 'wow/challenge/region';
+			case "region_leaderboard":
+				path = "wow/challenge/region";
 				break;
-			case 'team':
-				path = 'wow/arena/' + params['realm'] + '/' + params['size'] + '/' + params['name'];
+			case "team":
+				path = "wow/arena/" + params["realm"] + "/" + params["size"] + "/" + params["name"];
 				break;
-			case 'character':
-				path = 'wow/character/' + params['realm'] + '/' + params['name'];
+			case "character":
+				path = "wow/character/" + params["realm"] + "/" + params["name"];
 				break;
-			case 'item':
-				path = 'wow/item/' + params['id'];
+			case "item":
+				path = "wow/item/" + params["id"];
 				break;
-			case 'item_set':
-				path = 'wow/item/set/' + params['id'];
+			case "item_set":
+				path = "wow/item/set/" + params["id"];
 				break;
-			case 'guild':
-				path = 'wow/guild/' + params['realm'] + '/' + params['name'];
+			case "guild":
+				path = "wow/guild/" + params["realm"] + "/" + params["name"];
 				break;
-			case 'leaderboards':
-				path = 'wow/leaderboard/' + params['size'];
+			case "leaderboards":
+				path = "wow/leaderboard/" + params["size"];
 				break;
-			case 'quest':
-				path = 'wow/quest/' + params['id'];
+			case "quest":
+				path = "wow/quest/" + params["id"];
 				break;
-			case 'realmstatus':
-				path = 'wow/realm/status';
+			case "realmstatus":
+				path = "wow/realm/status";
 				break;
-			case 'recipe':
-				path = 'wow/recipe/' + params['id'];
+			case "recipe":
+				path = "wow/recipe/" + params["id"];
 				break;
-			case 'spell':
-				path = 'wow/spell/' + params['id'];
+			case "spell":
+				path = "wow/spell/" + params["id"];
 				break;
-			case 'battlegroups':
-				path = 'wow/data/battlegroups/';
+			case "battlegroups":
+				path = "wow/data/battlegroups/";
 				break;
-			case 'races':
-				path = 'wow/data/character/races';
+			case "races":
+				path = "wow/data/character/races";
 				break;
-			case 'classes':
-				path = 'wow/data/character/classes';
+			case "classes":
+				path = "wow/data/character/classes";
 				break;
-			case 'achievements':
-				path = 'wow/data/character/achievements';
+			case "achievements":
+				path = "wow/data/character/achievements";
 				break;
-			case 'guild_rewards':
-				path = 'wow/data/guild/rewards';
+			case "guild_rewards":
+				path = "wow/data/guild/rewards";
 				break;
-			case 'guild_perks':
-				path = 'wow/data/guild/perks';
+			case "guild_perks":
+				path = "wow/data/guild/perks";
 				break;
-			case 'guild_achievements':
-				path = 'wow/data/guild/achievements';
+			case "guild_achievements":
+				path = "wow/data/guild/achievements";
 				break;
-			case 'item_classes':
-				path = 'wow/data/item/classes';
+			case "item_classes":
+				path = "wow/data/item/classes";
 				break;
-			case 'talents':
-				path = 'wow/data/talents';
+			case "talents":
+				path = "wow/data/talents";
 				break;
-			case 'pet_types':
-				path = 'wow/data/pet/types';
+			case "pet_types":
+				path = "wow/data/pet/types";
 				break;
 			default:
 				break;
@@ -189,21 +197,21 @@ module.exports = function(options){
 		return path;
 	};
 
-	var _buildUrl = function(resource, params, config) {
+	var _buildRequest = function(resource, params, config) {
 
-		if(typeof config === "undefined"){
+		if(typeof config === "undefined") {
 			config = {};
 		}
 
-		var keys = ['url', 'qs', 'timeout', 'followRedirect', 'maxRedirects', 'encoding', 'gzip', 'tunnel', 'proxy', 'proxyHeaderWhiteList', 'proxyHeaderExclusiveList'],
+		var keys = ["url", "qs", "timeout", "followRedirect", "maxRedirects", "encoding", "gzip", "tunnel", "proxy", "proxyHeaderWhiteList", "proxyHeaderExclusiveList"],
 			endpoint = _mapRegionToEndpoint(params.region),
 			path = _buildType(resource, params),
-			fields = params.fields || '',
+			fields = params.fields || "",
 			locale = params.locale || endpoint.defaultLocale,
-			apikey = config.apikey || client.API_KEY || process.env.BNET_ID || process.env.BATTLENET_API_KEY || '';
+			apikey = config.apikey || options.API_KEY || client.API_KEY;
 
 		var req = extend(true, {
-			url: 'https://' + endpoint.hostname + "/" + path,
+			url: "https://" + endpoint.hostname + "/" + path,
 			qs: {
 				locale: locale,
 				apikey: apikey,
@@ -218,22 +226,37 @@ module.exports = function(options){
 
 		API_KEY: "",
 
-		setApiKey: function(key){
+		setApiKey: function(key) {
 			client.API_KEY = key;
 		},
 
 		fetch: function(resource, params, config) {
-			var req = _buildUrl(resource, params, config);
-			return (function(){
+			return new Promise(function(resolve, reject) {
 				var requestTs = Date.now();
-				return request(req)
-					.then(function (result){
-						result.responseTime = Date.now() - requestTs;
-						return result;
-					});
-			})();
+				var req = _buildRequest(resource, params, config);
+				request(req, function(error, response, body) {
+					var headers = response.headers;
+					var results = {
+						"statusCode": response["statusCode"],
+						"responseTime": Date.now() - requestTs,
+						"headers": {
+							"x-plan-qps-allotted": headers["x-plan-qps-allotted"],
+							"x-plan-qps-current": headers["x-plan-qps-current"],
+							"x-plan-quota-allotted": headers["x-plan-quota-allotted"],
+							"x-plan-quota-current": headers["x-plan-quota-current"],
+							"x-plan-quota-reset": headers["x-plan-quota-reset"]
+						},
+						"body": body
+					};					
+					if (!error && response.statusCode == 200) {
+						results["lastModified"] = response["last-modified"];
+						resolve(results);
+					} else {
+						reject(results);
+					}
+				});
+			});
 		}
-
 	};
 
 	return client;
