@@ -16,7 +16,21 @@ A basic client for the Blizzard Battle.net api using request-promise. Does not c
 ### Change your apikey at any time
     client.setApiKey("your_api_key_here");
 
+### Setting your apikey through environment variables
+
+If an apikey has not been explicitly provided, the client will fallback to either of the below environment variables if available.
+
+    process.env.BNET_ID
+    process.env.BATTLENET_API_KEY
+
 ### Enable Throttling
+
+If for example, your apikey is limited to 100 calls a second, you should configure the client to perform 99 or less api calls per 1000 milliseconds (1 second). This allows for just a slight buffer to avoid edge cases. 
+
+If you are requesting api calls faster than the set throttle, subsequent calls be will queued to be executed once the throttle duration has expired.
+
+Throttling uses [xavi-/node-simple-rate-limiter](https://github.com/xavi-/node-simple-rate-limiter) under the hood.
+
     var bnet = require("promise-battlenet-api");
     var client = new bnet({
         apikey: "your_api_key_here",,
@@ -25,12 +39,6 @@ A basic client for the Blizzard Battle.net api using request-promise. Does not c
             per: 1000 // the timeframe in milliseconds
         }
     });
-
-If for example, your apikey is limited to 100 calls a second, you should configure the client to perform 99 or less api calls per 1000 milliseconds (1 second). This allows for just a slight buffer to avoid edge cases. 
-
-If you are requesting api calls faster than the set throttle, subsequent calls be will queued to be executed once the throttle duration has expired.
-
-Throttling uses [xavi-/node-simple-rate-limiter](https://github.com/xavi-/node-simple-rate-limiter) under the hood.
 
 ## Usage
 
