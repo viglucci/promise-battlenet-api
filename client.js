@@ -239,17 +239,23 @@ module.exports = function(_options) {
 					var results = {
 						"statusCode": response["statusCode"],
 						"responseTime": Date.now() - requestTs,
-						"headers": {
-							"x-plan-qps-allotted": headers["x-plan-qps-allotted"],
-							"x-plan-qps-current": headers["x-plan-qps-current"],
-							"x-plan-quota-allotted": headers["x-plan-quota-allotted"],
-							"x-plan-quota-current": headers["x-plan-quota-current"],
-							"x-plan-quota-reset": headers["x-plan-quota-reset"]
-						},
-						"body": body
+						"headers": {},
+						"data": body
 					};
+					if(headers["x-plan-qps-allotted"]) {
+						results.headers["x-plan-qps-allotted"] = headers["x-plan-qps-allotted"];
+					}
+					if(headers["x-plan-qps-current"]) {
+						results.headers["x-plan-qps-current"] = headers["x-plan-qps-current"];
+					}
+					if(headers["x-plan-quota-current"]) {
+						results.headers["x-plan-quota-current"] = headers["x-plan-quota-current"];
+					}
+					if(headers["x-plan-quota-reset"]) {
+						results.headers["x-plan-quota-reset"] = headers["x-plan-quota-reset"];
+					}
 					if (!error && response.statusCode == 200) {
-						results["lastModified"] = response["last-modified"];
+						results.headers["last-modified"] = headers["last-modified"];
 						resolve(results);
 					} else {
 						reject(results);
