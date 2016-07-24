@@ -1,6 +1,6 @@
 {
   "name": "promise-battlenet-api",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "A basic client for the Blizzard Battle.net api using request and promises.",
   "main": "client.js",
   "scripts": {
