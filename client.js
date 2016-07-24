@@ -5,15 +5,13 @@
  *  https://github.com/benweier/battlenet-api
  */
 
-var limit     = require("simple-rate-limiter"),
-	Promise   = require("bluebird"),
-	request   = require("request"),
-	extend    = require("extend");
+var	pckage  = require("./package.json");
+var	Promise = require("bluebird");
+var limit   = require("simple-rate-limiter");
+var	request = require("request");
+var	extend  = require("extend");
 
 module.exports = function(_options) {
-	"use strict"; 
-
-	var version = "v0.1.2";
 
 	var options = {
 		"API_KEY": _options.apikey || process.env.BNET_ID || process.env.BATTLENET_API_KEY || ""
@@ -23,15 +21,15 @@ module.exports = function(_options) {
 		&& typeof _options.throttle.to !== "undefined" 
 		&& typeof _options.throttle.per !== "undefined") {
 		request = limit(request)
-			.to(_options.throttle.to)
-			.per(_options.throttle.per);
+		.to(_options.throttle.to)
+		.per(_options.throttle.per);
 	}
 
 	var requiredDefaults = {
 		method: "GET",
 		encoding: "UTF-8",
 		headers: {
-			"User-Agent": "Node.js/" + process.version + " promise-battlenet-api/" + version
+			"User-Agent": "Node.js/" + process.version + " promise-battlenet-api/" + pckage.version
 		},
 		json: true,
 		qs: {},
@@ -53,7 +51,7 @@ module.exports = function(_options) {
 		};
 	};
 
-	var _pick = function(obj) {
+	var _pick = function (obj) {
 		var result = {};
 
 		if (obj === null) return result;
@@ -68,7 +66,7 @@ module.exports = function(_options) {
 		return result;
 	};
 
-	var _mapRegionToEndpoint = function(region) {
+	var _mapRegionToEndpoint = function (region) {
 
 		region = region.toLowerCase();
 
@@ -106,7 +104,7 @@ module.exports = function(_options) {
 		return endpoints.us;
 	};
 
-	var _buildType = function(resource, params) {
+	var _buildType = function (resource, params) {
 		var path = null;
 		switch (resource)
 		{
@@ -197,7 +195,7 @@ module.exports = function(_options) {
 		return path;
 	};
 
-	var _buildRequest = function(resource, params, config) {
+	var _buildRequest = function (resource, params, config) {
 
 		if(typeof config === "undefined") {
 			config = {};
@@ -234,32 +232,34 @@ module.exports = function(_options) {
 			return new Promise(function(resolve, reject) {
 				var requestTs = Date.now();
 				var req = _buildRequest(resource, params, config);
-				request(req, function(error, response, body) {
-					var headers = response.headers;
-					var results = {
-						"statusCode": response["statusCode"],
-						"responseTime": Date.now() - requestTs,
-						"headers": {},
-						"data": body
-					};
-					if(headers["x-plan-qps-allotted"]) {
-						results.headers["x-plan-qps-allotted"] = headers["x-plan-qps-allotted"];
-					}
-					if(headers["x-plan-qps-current"]) {
-						results.headers["x-plan-qps-current"] = headers["x-plan-qps-current"];
-					}
-					if(headers["x-plan-quota-current"]) {
-						results.headers["x-plan-quota-current"] = headers["x-plan-quota-current"];
-					}
-					if(headers["x-plan-quota-reset"]) {
-						results.headers["x-plan-quota-reset"] = headers["x-plan-quota-reset"];
-					}
-					if (!error && response.statusCode == 200) {
+				request(req, function (error, response, body) {
+					if (error) {
+						reject(error);
+					} else {
+						var headers = response.headers;
+						var results = {
+							"statusCode": response["statusCode"],
+							"responseTime": Date.now() - requestTs,
+							"headers": {},
+							"data": body
+						};
+						if (headers["x-plan-qps-allotted"]) {
+							results.headers["x-plan-qps-allotted"] = headers["x-plan-qps-allotted"];
+						}
+						if (headers["x-plan-qps-current"]) {
+							results.headers["x-plan-qps-current"] = headers["x-plan-qps-current"];
+						}
+						if (headers["x-plan-quota-current"]) {
+							results.headers["x-plan-quota-current"] = headers["x-plan-quota-current"];
+						}
+						if (headers["x-plan-quota-reset"]) {
+							results.headers["x-plan-quota-reset"] = headers["x-plan-quota-reset"];
+						}
 						results.headers["last-modified"] = headers["last-modified"];
 						resolve(results);
-					} else {
-						reject(results);
 					}
+				}).on("error", function (e) {
+					reject(e);
 				});
 			});
 		}

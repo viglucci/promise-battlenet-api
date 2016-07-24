@@ -29,6 +29,7 @@
     "bluebird": "^3.3.5",
     "extend": "^2.0.0",
     "request": "^2.71.0",
+    "request-promise": "^4.0.2",
     "simple-rate-limiter": "^0.2.3"
   }
 }
