@@ -139,16 +139,6 @@ Use the throttling feature to avoid this error.
          type: 'Forbidden',
          detail: 'Account Over Queries Per Second Limit' } }
 
-## Release History
-
-* 1.0.0 
- * added throttling capabilities
- * modified return from client.fetch which breaks backwards compatibility
-* 0.1.2 
- * add responseTime to request response
-* 0.1.0 
- * initial release
-
 ## License
 
 The MIT License (MIT)

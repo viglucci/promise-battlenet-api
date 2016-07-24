@@ -1,6 +1,7 @@
 /*
  * Fetch resources from the battle.net api.
- * Influenced and borrowed heavily from:
+ *  https://dev.battle.net
+ * Influenced by:
  *  https://github.com/Ulminia/blizzard-api-oauth
  *  https://github.com/benweier/battlenet-api
  */
